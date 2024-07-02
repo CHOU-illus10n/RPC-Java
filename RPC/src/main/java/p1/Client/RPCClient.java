@@ -1,0 +1,25 @@
+package p1.Client;
+
+import p1.Client.Proxy.ClientProxy;
+import p1.common.pojo.User;
+import p1.common.service.UserService;
+
+/**
+ * @author zwy
+ * @version 1.0
+ * @description: TODO
+ * @date 2024/7/2 19:47
+ */
+public class RPCClient {
+    public static void main(String[] args) {
+        ClientProxy clientProxy = new ClientProxy("127.0.0.1",9000);
+        UserService proxy = clientProxy.getProxy(UserService.class);
+
+        User userByUserId = proxy.getUserByUserId(10);
+        System.out.println("从服务端获取的user为"+userByUserId);
+
+        User user = User.builder().userName("leo").id(100).sex(true).build();
+        Integer i = proxy.insertUserId(user);
+        System.out.println("插入数据"+i);
+    }
+}
