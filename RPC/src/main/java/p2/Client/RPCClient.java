@@ -1,6 +1,8 @@
 package p2.Client;
 
 import p2.Client.Proxy.ClientProxy;
+import p2.Client.client.impl.NettyRPCClient;
+import p2.Client.client.impl.SimpleRPCClient;
 import p2.common.pojo.User;
 import p2.common.service.UserService;
 import p2.common.pojo.Blog;
@@ -14,7 +16,9 @@ import p2.common.service.BlogService;
  */
 public class RPCClient {
     public static void main(String[] args) {
-        ClientProxy clientProxy = new ClientProxy("127.0.0.1",9000);
+        NettyRPCClient nettyRPCClient = new NettyRPCClient("127.0.0.1", 9000);
+        //将客户端传入代理客户端
+        ClientProxy clientProxy = new ClientProxy(nettyRPCClient);
         UserService proxy = clientProxy.getProxy(UserService.class);
         // 客户中添加新的测试用例
         BlogService blogService = clientProxy.getProxy(BlogService.class);
