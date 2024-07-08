@@ -28,4 +28,19 @@ public class serviceCache {
             cache.put(serviceName,addressList);
         }
     }
+
+    //从缓存中取服务地址
+    public  List<String> getServcieFromCache(String serviceName){
+        if(!cache.containsKey(serviceName)) {
+            return null;
+        }
+        List<String> a=cache.get(serviceName);
+        return a;
+    }
+    //从缓存中删除服务地址
+    public void delete(String serviceName,String address){
+        List<String> addressList = cache.get(serviceName);
+        addressList.remove(address);
+        System.out.println("将name为"+serviceName+"和地址为"+address+"的服务从本地缓存中删除");
+    }
 }

@@ -9,8 +9,12 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
 import p1.Client.client.RPCClient;
 import p1.Client.netty.nettyInitializer.NettyClientInitializer;
+import p1.Client.serviceCenter.ServiceCenter;
+import p1.Client.serviceCenter.impl.ZKServiceCenter;
 import p1.common.message.RPCRequest;
 import p1.common.message.RPCResponse;
+
+import java.net.InetSocketAddress;
 
 /**
  * @author zwy
@@ -22,15 +26,22 @@ public class NettyRPCClient implements RPCClient {
 
     private static final Bootstrap bootstrap;
     private static final EventLoopGroup eventLoopGroup;
-    private String host;
-    private int port;
-    public NettyRPCClient(String host, int port) {
-        this.host = host;
-        this.port = port;
+//    private String host;
+//    private int port;
+//    public NettyRPCClient(String host, int port) {
+//        this.host = host;
+//        this.port = port;
+//    }
+    private ServiceCenter serviceCenter;
+    public NettyRPCClient(){
+        this.serviceCenter=new ZKServiceCenter();
     }
-
     @Override
     public RPCResponse sendRequest(RPCRequest request) {
+        //从注册中心获取host,post
+        InetSocketAddress address = serviceCenter.serviceDiscovery(request.getInterfaceName());
+        String host = address.getHostName();
+        int port = address.getPort();
         //创建一个channelFuture对象，代表这一个操作事件，sync方法表示堵塞直到connect完成
         ChannelFuture channelFuture  = null;
         try {
