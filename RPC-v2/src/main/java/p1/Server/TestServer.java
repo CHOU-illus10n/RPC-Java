@@ -16,7 +16,7 @@ public class TestServer {
 //        Map<String, Object> serviceProvide = new HashMap<>();
 //        serviceProvide.put("com.ganghuan.myRPCVersion2.service.UserService",userService);
 //        serviceProvide.put("com.ganghuan.myRPCVersion2.service.BlogService",blogService);
-        ServiceProvider serviceProvider = new ServiceProvider("127.0.0.1",9999);
+        ServiceProvider serviceProvider = new ServiceProvider("127.0.0.1",9000);
         serviceProvider.provideServiceInterface(userService);
         serviceProvider.provideServiceInterface(blogService);
         

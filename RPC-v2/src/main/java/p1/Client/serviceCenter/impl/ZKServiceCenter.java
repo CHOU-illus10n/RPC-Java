@@ -7,6 +7,7 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import p1.Client.cache.serviceCache;
 import p1.Client.serviceCenter.ServiceCenter;
 import p1.Client.serviceCenter.ZKWatcher.watchZK;
+import p1.Client.serviceCenter.balance.impl.ConsistencyHashBalance;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -43,15 +44,18 @@ public class ZKServiceCenter implements ServiceCenter {
     @Override
     public InetSocketAddress serviceDiscovery(String serviceName) {
         try {
+            //先找本地缓存
             List<String> serviceList=cache.getServcieFromCache(serviceName);
             //如果找不到，再去zookeeper中找
             //这种i情况基本不会发生，或者说只会出现在初始化阶段
             if(serviceList==null) {
                 serviceList=client.getChildren().forPath("/" + serviceName);
             }
-            // 这里默认用的第一个，后面加负载均衡
-            String string = serviceList.get(0);
-            return parseAddress(string);
+//            // 这里默认用的第一个，后面加负载均衡
+//            String string = serviceList.get(0);
+            // 加入负载均衡层
+            String balance = new ConsistencyHashBalance().balance(serviceList);
+            return parseAddress(balance);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
