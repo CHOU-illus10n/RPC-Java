@@ -33,8 +33,8 @@ public class NettyRPCClient implements RPCClient {
 //        this.port = port;
 //    }
     private ServiceCenter serviceCenter;
-    public NettyRPCClient() throws InterruptedException {
-        this.serviceCenter=new ZKServiceCenter();
+    public NettyRPCClient(ServiceCenter serviceCenter) throws InterruptedException {
+        this.serviceCenter=serviceCenter;
     }
     @Override
     public RPCResponse sendRequest(RPCRequest request) {

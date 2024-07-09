@@ -17,8 +17,8 @@ public class TestServer {
 //        serviceProvide.put("com.ganghuan.myRPCVersion2.service.UserService",userService);
 //        serviceProvide.put("com.ganghuan.myRPCVersion2.service.BlogService",blogService);
         ServiceProvider serviceProvider = new ServiceProvider("127.0.0.1",9000);
-        serviceProvider.provideServiceInterface(userService);
-        serviceProvider.provideServiceInterface(blogService);
+        serviceProvider.provideServiceInterface(userService,true);
+        serviceProvider.provideServiceInterface(blogService,true);
         
         RPCServer RPCServer = new NettyRPCServer(serviceProvider);
         RPCServer.start(9000);

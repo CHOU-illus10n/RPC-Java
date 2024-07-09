@@ -20,6 +20,7 @@ public class ZKServiceRegister implements ServiceRegister {
     private CuratorFramework client;
     //zookeeper根路径节点
     private static final String ROOT_PATH = "MyRPC";
+    private static final String RETRY = "CanRetry";
 
     public ZKServiceRegister() {
         // 指数时间重试
@@ -35,7 +36,7 @@ public class ZKServiceRegister implements ServiceRegister {
     }
 
     @Override
-    public void register(String serviceName, InetSocketAddress serviceAddress) {
+    public void register(String serviceName, InetSocketAddress serviceAddress, boolean canRetry) {
         try {
             if(client.checkExists().forPath("/"+serviceName) == null){
                 client.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/"+serviceName);
@@ -44,6 +45,11 @@ public class ZKServiceRegister implements ServiceRegister {
             String path = "/" + serviceName + "/" + getServiceAddress(serviceAddress);
             // 临时节点
             client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path);
+            //如果这个服务是幂等性，就增加到节点中
+            if (canRetry){
+                path ="/"+RETRY+"/"+serviceName;
+                client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path);
+            }
         } catch (Exception e) {
             System.out.println("此服务已存在");
         }

@@ -28,14 +28,14 @@ public class ServiceProvider {
         this.serviceRegister=new ZKServiceRegister();
     }
 
-    public void provideServiceInterface(Object service){
+    public void provideServiceInterface(Object service,boolean canRetry){
         String name = service.getClass().getName();
         Class<?>[] interfaces = service.getClass().getInterfaces();
         //一个实现类可能实现多个接口
         for(Class clazz : interfaces){
             interfaceProvider.put(clazz.getName(), service);
             //在注册中心注册服务
-            serviceRegister.register(clazz.getName(),new InetSocketAddress(host,port));
+            serviceRegister.register(clazz.getName(),new InetSocketAddress(host,port),canRetry);
         }
     }
 

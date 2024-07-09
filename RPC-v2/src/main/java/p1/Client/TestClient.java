@@ -17,9 +17,9 @@ import p1.common.service.UserService;
 public class TestClient {
     public static void main(String[] args) throws InterruptedException {
         //NettyRPCClient nettyRPCClient = new NettyRPCClient("127.0.0.1", 9000);
-        NettyRPCClient nettyRPCClient = new NettyRPCClient();
+        //NettyRPCClient nettyRPCClient = new NettyRPCClient();
         //将客户端传入代理客户端
-        ClientProxy clientProxy = new ClientProxy(nettyRPCClient);
+        ClientProxy clientProxy=new ClientProxy();
         UserService proxy = clientProxy.getProxy(UserService.class);
         // 客户中添加新的测试用例
         BlogService blogService = clientProxy.getProxy(BlogService.class);
