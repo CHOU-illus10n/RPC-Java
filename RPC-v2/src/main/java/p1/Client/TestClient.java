@@ -15,7 +15,7 @@ import p1.common.service.UserService;
  * @date 2024/7/2 19:47
  */
 public class TestClient {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //NettyRPCClient nettyRPCClient = new NettyRPCClient("127.0.0.1", 9000);
         NettyRPCClient nettyRPCClient = new NettyRPCClient();
         //将客户端传入代理客户端

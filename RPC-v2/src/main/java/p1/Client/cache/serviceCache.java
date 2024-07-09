@@ -43,4 +43,15 @@ public class serviceCache {
         addressList.remove(address);
         System.out.println("将name为"+serviceName+"和地址为"+address+"的服务从本地缓存中删除");
     }
+
+    //修改服务地址
+    public void replaceServiceAddress(String serviceName,String oldAddress,String newAddress){
+        if(cache.containsKey(serviceName)){
+            List<String> addressList = cache.get(serviceName);
+            addressList.remove(oldAddress);
+            addressList.add(newAddress);
+        }else{
+            System.out.println("服务不存在，修改失败");
+        }
+    }
 }
